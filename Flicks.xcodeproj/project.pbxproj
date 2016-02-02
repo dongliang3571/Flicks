@@ -12,6 +12,7 @@
 		3BD111F01C60510300D3DB71 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BD111EE1C60510300D3DB71 /* Main.storyboard */; };
 		3BD111F21C60510300D3DB71 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BD111F11C60510300D3DB71 /* Assets.xcassets */; };
 		3BD111F51C60510300D3DB71 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BD111F31C60510300D3DB71 /* LaunchScreen.storyboard */; };
+		DBE3686D8E24613091FFEE9D /* Pods_Flicks.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D10612D23EC9D250045B5471 /* Pods_Flicks.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,9 @@
 		3BD111F11C60510300D3DB71 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3BD111F41C60510300D3DB71 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3BD111F61C60510300D3DB71 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		903A740D2CFDDEB0184B039D /* Pods-Flicks.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flicks.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Flicks/Pods-Flicks.debug.xcconfig"; sourceTree = "<group>"; };
+		D10612D23EC9D250045B5471 /* Pods_Flicks.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flicks.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F1989CF2C31C688363A2CB8A /* Pods-Flicks.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flicks.release.xcconfig"; path = "Pods/Target Support Files/Pods-Flicks/Pods-Flicks.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +33,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DBE3686D8E24613091FFEE9D /* Pods_Flicks.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2FB42582A9BD0F6AA3092AFE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				903A740D2CFDDEB0184B039D /* Pods-Flicks.debug.xcconfig */,
+				F1989CF2C31C688363A2CB8A /* Pods-Flicks.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		3BD111DE1C60510300D3DB71 = {
 			isa = PBXGroup;
 			children = (
 				3BD111E91C60510300D3DB71 /* Flicks */,
 				3BD111E81C60510300D3DB71 /* Products */,
+				2FB42582A9BD0F6AA3092AFE /* Pods */,
+				A53FFF0E128404CFECDF2E90 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +80,14 @@
 			path = Flicks;
 			sourceTree = "<group>";
 		};
+		A53FFF0E128404CFECDF2E90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				D10612D23EC9D250045B5471 /* Pods_Flicks.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -71,9 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3BD111F91C60510300D3DB71 /* Build configuration list for PBXNativeTarget "Flicks" */;
 			buildPhases = (
+				0F01C25FC5A995AEC4C43070 /* Check Pods Manifest.lock */,
 				3BD111E31C60510300D3DB71 /* Sources */,
 				3BD111E41C60510300D3DB71 /* Frameworks */,
 				3BD111E51C60510300D3DB71 /* Resources */,
+				D1C064ADA7D71FF3F76DD8FE /* Embed Pods Frameworks */,
+				70F3C92EEDC2506B0E435710 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -130,6 +157,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0F01C25FC5A995AEC4C43070 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		70F3C92EEDC2506B0E435710 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Flicks/Pods-Flicks-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D1C064ADA7D71FF3F76DD8FE /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Flicks/Pods-Flicks-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3BD111E31C60510300D3DB71 /* Sources */ = {
@@ -246,6 +321,7 @@
 		};
 		3BD111FA1C60510300D3DB71 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 903A740D2CFDDEB0184B039D /* Pods-Flicks.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Flicks/Info.plist;
@@ -257,6 +333,7 @@
 		};
 		3BD111FB1C60510300D3DB71 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F1989CF2C31C688363A2CB8A /* Pods-Flicks.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = Flicks/Info.plist;
@@ -285,6 +362,7 @@
 				3BD111FB1C60510300D3DB71 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
