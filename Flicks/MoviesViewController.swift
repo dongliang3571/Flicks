@@ -49,7 +49,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let overview = movie["overview"] as? String
         let baseUrl = "http://image.tmdb.org/t/p/w500"
         let postpath = movie["poster_path"] as? String
-        let imageUrl = NSURL(string: baseUrl + postpath!)
+        let imageUrl2 : String
+        if let mypostpath = postpath {
+            imageUrl2 = baseUrl + mypostpath
+        }else {
+            imageUrl2 = baseUrl
+        }
+        let imageUrl = NSURL(string: imageUrl2)
         cell.title.text = title
         cell.overview.text = overview
         cell.postview.setImageWithURL(imageUrl!)
