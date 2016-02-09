@@ -13,8 +13,6 @@ class ColorViewController: UIViewController {
     
     @IBOutlet weak var mycollectionview: UICollectionView!
     
-    
-    @IBOutlet weak var myflow: UICollectionViewFlowLayout!
     let totalColors: Int = 100
     func colorForIndexPath(indexPath: NSIndexPath) -> UIColor {
         if indexPath.row >= totalColors {
@@ -32,9 +30,7 @@ class ColorViewController: UIViewController {
         mycollectionview.dataSource = self
         
         
-        myflow.minimumLineSpacing = 0
-        myflow.minimumInteritemSpacing = 0
-        myflow.sectionInset = UIEdgeInsetsMake(0, 0, 0, 10)
+
 
         // Do any additional setup after loading the view.
     }

@@ -189,14 +189,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             errorMessage.setTitle("Network is still down, try again", forState: UIControlState.Normal)
         }
     }
-    /*
-    // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
