@@ -9,11 +9,12 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
+import SystemConfiguration
 
 class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var errorMessage: UILabel!
+    @IBOutlet weak var errorMessage: UIButton!
 
     var movies: [NSDictionary]?
     var myrequest: NSURLRequest?
@@ -25,7 +26,13 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
-        loadDataFromNetwork()
+        
+        if Reachability.isConnectedToNetwork() {
+            errorMessage.hidden = true
+            loadDataFromNetwork()
+        } else {
+            errorMessage.hidden = false
+        }
         // Do any additional setup after loading the view.
     }
 
@@ -106,7 +113,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     
     func refreshControlAction(refreshControl: UIRefreshControl) {
-        
+        if Reachability.isConnectedToNetwork() {
+            errorMessage.hidden = true
+            errorMessage.setTitle("Network error!(Click to refresh)", forState: UIControlState.Normal)
+        } else {
+            errorMessage.hidden = false
+            errorMessage.setTitle("Network is still down, try again", forState: UIControlState.Normal)
+            refreshControl.endRefreshing()
+        }
         // ... Create the NSURLRequest (myRequest) ...
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
@@ -146,9 +160,35 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
 
     
-
+    internal class Reachability {
+        class func isConnectedToNetwork() -> Bool {
+            var zeroAddress = sockaddr_in()
+            zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+            zeroAddress.sin_family = sa_family_t(AF_INET)
+            let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
+                SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+            }
+            var flags = SCNetworkReachabilityFlags()
+            if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+                return false
+            }
+            let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
+            let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
+            return (isReachable && !needsConnection)
+        }
+    }
    
     
+    @IBAction func buttonPressed(sender: UIButton) {
+        if Reachability.isConnectedToNetwork() {
+            errorMessage.hidden = true
+            errorMessage.setTitle("Network error!(Click to refresh)", forState: UIControlState.Normal)
+            loadDataFromNetwork()
+        } else {
+            errorMessage.hidden = false
+            errorMessage.setTitle("Network is still down, try again", forState: UIControlState.Normal)
+        }
+    }
     /*
     // MARK: - Navigation
 
