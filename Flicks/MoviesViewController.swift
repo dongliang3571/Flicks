@@ -11,9 +11,9 @@ import AFNetworking
 import MBProgressHUD
 import SystemConfiguration
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController {
 
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var tableView: UICollectionView!
     @IBOutlet weak var errorMessage: UIButton!
 
     var movies: [NSDictionary]?
@@ -40,36 +40,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if let movies = movies {
-            return movies.count
-        } else {
-            return 0
-        }
-    }
-    
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-        let movie = movies![indexPath.row]
-        let title = movie["title"] as? String
-        let overview = movie["overview"] as? String
-        let baseUrl = "http://image.tmdb.org/t/p/w500"
-        let postpath = movie["poster_path"] as? String
-        let imageUrl2 : String
-        if let mypostpath = postpath {
-            imageUrl2 = baseUrl + mypostpath
-        }else {
-            imageUrl2 = baseUrl
-        }
-        let imageUrl = NSURL(string: imageUrl2)
-        cell.title.text = title
-        cell.overview.text = overview
-        cell.postview.setImageWithURL(imageUrl!)
-        
-        print("row \(indexPath.row)")
-        return cell
-    }
+
     
     func loadDataFromNetwork() {
         
@@ -191,4 +162,38 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
 
+}
+
+
+
+extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let movies = movies {
+            return movies.count
+        } else {
+            return 0
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        let cell = tableView.dequeueReusableCellWithReuseIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
+        let movie = movies![indexPath.row]
+        let title = movie["title"] as? String
+        let overview = movie["overview"] as? String
+        let baseUrl = "http://image.tmdb.org/t/p/w500"
+        let postpath = movie["poster_path"] as? String
+        let imageUrl2 : String
+        if let mypostpath = postpath {
+            imageUrl2 = baseUrl + mypostpath
+        }else {
+            imageUrl2 = baseUrl
+        }
+        let imageUrl = NSURL(string: imageUrl2)
+//        cell.title.text = title
+//        cell.overview.text = overview
+        cell.postview.setImageWithURL(imageUrl!)
+        
+        print("row \(indexPath.row)")
+        return cell
+    }
 }
