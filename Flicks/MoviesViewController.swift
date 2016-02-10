@@ -15,14 +15,19 @@ class MoviesViewController: UIViewController {
 
     @IBOutlet weak var tableView: UICollectionView!
     @IBOutlet weak var errorMessage: UIButton!
+    @IBOutlet weak var searchBar: UISearchBar!
 
     var movies: [NSDictionary]?
     var myrequest: NSURLRequest?
+    var filteredData: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.dataSource = self
         tableView.delegate = self
+        searchBar.delegate = self
+        
+        
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
         tableView.insertSubview(refreshControl, atIndex: 0)
@@ -70,6 +75,7 @@ class MoviesViewController: UIViewController {
                             print("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as? [NSDictionary]
+                            self.filteredData = self.movies
                             self.tableView.reloadData()
                     }
                 }
@@ -115,7 +121,7 @@ class MoviesViewController: UIViewController {
                             print("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as? [NSDictionary]
-                            
+                            self.filteredData = self.movies
                             // Reload the tableView now that there is new data
                             self.tableView.reloadData()
                             
@@ -166,9 +172,9 @@ class MoviesViewController: UIViewController {
 
 
 
-extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDelegate {
+extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let movies = movies {
+        if let movies = filteredData {
             return movies.count
         } else {
             return 0
@@ -177,9 +183,9 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = tableView.dequeueReusableCellWithReuseIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-        let movie = movies![indexPath.row]
-        let title = movie["title"] as? String
-        let overview = movie["overview"] as? String
+        let movie = filteredData![indexPath.row]
+//        let title = movie["title"] as? String
+//        let overview = movie["overview"] as? String
         let baseUrl = "http://image.tmdb.org/t/p/w500"
         let postpath = movie["poster_path"] as? String
         let imageUrl2 : String
@@ -195,5 +201,25 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
         
         print("row \(indexPath.row)")
         return cell
+    }
+    
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        filteredData = self.movies
+        if searchText.isEmpty {
+            tableView.reloadData()
+        }
+        else {
+            var temp_array = [NSDictionary]()
+            for each in filteredData! {
+                let titleString = each["title"] as? String
+                if titleString!.rangeOfString(searchText, options: .CaseInsensitiveSearch) != nil {
+                    temp_array.append(each)
+                }
+                
+                filteredData = temp_array
+            }
+            tableView.reloadData()
+        }
+
     }
 }
