@@ -194,10 +194,31 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
         }else {
             imageUrl2 = baseUrl
         }
-        let imageUrl = NSURL(string: imageUrl2)
+        let imageUrl: NSURLRequest = NSURLRequest(URL: NSURL(string: imageUrl2)!)
 //        cell.title.text = title
 //        cell.overview.text = overview
-        cell.postview.setImageWithURL(imageUrl!)
+        cell.postview.setImageWithURLRequest(
+            imageUrl,
+            placeholderImage: nil,
+            success: { (imageRequest, imageResponse, image) -> Void in
+                
+                // imageResponse will be nil if the image is cached
+                if imageResponse != nil {
+                    print("Image was NOT cached, fade in image")
+                    cell.postview.alpha = 0.0
+                    cell.postview.image = image
+                    UIView.animateWithDuration(2, animations: { () -> Void in
+                        cell.postview.alpha = 1.0
+                    })
+                } else {
+                    print("Image was cached so just update the image")
+                    cell.postview.image = image
+                }
+            },
+            failure: { (imageRequest, imageResponse, error) -> Void in
+                // do something for the failure condition
+            }
+        )
         
         print("row \(indexPath.row)")
         return cell
