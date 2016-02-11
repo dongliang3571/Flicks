@@ -14,7 +14,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="28i-dE-wVg">
-                                <rect key="frame" x="0.0" y="74" width="320" height="494"/>
+                                <rect key="frame" x="0.0" y="103" width="320" height="465"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.0" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Jre-ls-Aho">
@@ -50,7 +50,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </searchBar>
                             <button opaque="NO" alpha="0.69999999999999996" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="1X0-Pb-JTV">
-                                <rect key="frame" x="0.0" y="74" width="320" height="46"/>
+                                <rect key="frame" x="0.0" y="103" width="320" height="46"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.29803922770000002" green="0.29803922770000002" blue="0.29803922770000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -61,18 +61,32 @@
                                     <action selector="buttonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yG4-Xe-oMZ"/>
                                 </connections>
                             </button>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="AkW-ZZ-xNJ">
+                                <rect key="frame" x="0.0" y="74" width="320" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.12941176470588237" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <segments>
+                                    <segment title="Vote(High to Low)"/>
+                                    <segment title="Vote(Low to High)"/>
+                                </segments>
+                                <connections>
+                                    <action selector="voteSegmentPressed:" destination="BYZ-38-t0r" eventType="valueChanged" id="bXv-Ei-XJs"/>
+                                </connections>
+                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="svZ-ux-HtH"/>
                     <connections>
                         <outlet property="errorMessage" destination="1X0-Pb-JTV" id="Q3F-fY-faG"/>
                         <outlet property="searchBar" destination="DkS-AS-RMC" id="a6t-iW-AAr"/>
                         <outlet property="tableView" destination="28i-dE-wVg" id="f9g-CL-oXz"/>
+                        <outlet property="voteSegment" destination="AkW-ZZ-xNJ" id="XYN-F4-ygW"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="131" y="308"/>
+            <point key="canvasLocation" x="663" y="308"/>
         </scene>
     </scenes>
 </document>

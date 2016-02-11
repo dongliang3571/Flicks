@@ -17,6 +17,8 @@ class MoviesViewController: UIViewController {
     @IBOutlet weak var errorMessage: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
 
+    @IBOutlet weak var voteSegment: UISegmentedControl!
+    
     var movies: [NSDictionary]?
     var myrequest: NSURLRequest?
     var filteredData: [NSDictionary]?
@@ -72,10 +74,12 @@ class MoviesViewController: UIViewController {
                 if let data = dataOrNil {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         data, options:[]) as? NSDictionary {
-                            print("response: \(responseDictionary)")
+//                            print("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as? [NSDictionary]
-                            self.filteredData = self.movies
+                            
+                            let sortedarray = self.filterbyvote(self.movies!)
+                            self.filteredData = sortedarray
                             self.tableView.reloadData()
                     }
                 }
@@ -118,7 +122,7 @@ class MoviesViewController: UIViewController {
                 if let mydata = data {
                     if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(
                         mydata, options:[]) as? NSDictionary {
-                            print("response: \(responseDictionary)")
+//                            print("response: \(responseDictionary)")
                             
                             self.movies = responseDictionary["results"] as? [NSDictionary]
                             self.filteredData = self.movies
@@ -187,6 +191,8 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
 //        let title = movie["title"] as? String
 //        let overview = movie["overview"] as? String
         let baseUrl = "http://image.tmdb.org/t/p/w500"
+//        let votes = movie["vote_average"] as? Float
+//        print(votes!)
         let postpath = movie["poster_path"] as? String
         let imageUrl2 : String
         if let mypostpath = postpath {
@@ -204,14 +210,14 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
                 
                 // imageResponse will be nil if the image is cached
                 if imageResponse != nil {
-                    print("Image was NOT cached, fade in image")
+//                    print("Image was NOT cached, fade in image")
                     cell.postview.alpha = 0.0
                     cell.postview.image = image
                     UIView.animateWithDuration(2, animations: { () -> Void in
                         cell.postview.alpha = 1.0
                     })
                 } else {
-                    print("Image was cached so just update the image")
+//                    print("Image was cached so just update the image")
                     cell.postview.image = image
                 }
             },
@@ -220,7 +226,7 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
             }
         )
         
-        print("row \(indexPath.row)")
+//        print("row \(indexPath.row)")
         return cell
     }
     
@@ -243,4 +249,46 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
         }
 
     }
+    
+    
+    @IBAction func voteSegmentPressed(sender: UISegmentedControl) {
+        if(voteSegment.selectedSegmentIndex == 0) {
+            var temp_array = [NSDictionary]()
+            var sortedArray = [NSDictionary]()
+            temp_array = self.movies!
+            sortedArray = temp_array.sort { (element1, element2) -> Bool in
+                return (element1["vote_average"] as! Float) > (element2["vote_average"] as! Float)
+            }
+            
+            filteredData = sortedArray
+            tableView.reloadData()
+        }
+        else {
+            var temp_array = [NSDictionary]()
+            var sortedArray = [NSDictionary]()
+            temp_array = self.movies!
+            sortedArray = temp_array.sort { (element1, element2) -> Bool in
+                return (element1["vote_average"] as! Float) < (element2["vote_average"] as! Float)
+            }
+            
+            filteredData = sortedArray
+            tableView.reloadData()
+        }
+        
+        
+    }
+    
+    
+    func filterbyvote(dictionary: [NSDictionary]) -> [NSDictionary]{
+        
+        var temp_array = [NSDictionary]()
+        temp_array = dictionary
+        let sortedArray = temp_array.sort { (element1, element2) -> Bool in
+            return (element1["vote_average"] as! Float) > (element2["vote_average"] as! Float)
+        }
+        
+        return sortedArray
+    }
+    
+    
 }
