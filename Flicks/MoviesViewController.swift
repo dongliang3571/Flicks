@@ -36,7 +36,9 @@ class MoviesViewController: UIViewController {
         
         if Reachability.isConnectedToNetwork() {
             errorMessage.hidden = true
+            MBProgressHUD.showHUDAddedTo(self.view, animated: true)
             loadDataFromNetwork()
+            MBProgressHUD.hideHUDForView(self.view, animated: true)
         } else {
             errorMessage.hidden = false
         }
@@ -67,7 +69,7 @@ class MoviesViewController: UIViewController {
         )
         
         // Display HUD right before the request is made
-        MBProgressHUD.showHUDAddedTo(self.view, animated: true)
+        
         
         let task: NSURLSessionDataTask = session.dataTaskWithRequest(myrequest!,
             completionHandler: { (dataOrNil, response, error) in
@@ -86,7 +88,7 @@ class MoviesViewController: UIViewController {
         })
         task.resume()
         // Hide HUD once the network request comes back (must be done on main UI thread)
-        MBProgressHUD.hideHUDForView(self.view, animated: true)
+        
         // ... Remainder of response handling code ...
     }
         
