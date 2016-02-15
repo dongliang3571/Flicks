@@ -292,5 +292,15 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
         return sortedArray
     }
     
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let cell = sender as! UICollectionViewCell
+        let indexpath = tableView.indexPathForCell(cell)
+        let movie = movies![indexpath!.row]
+        
+        let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.movie = movie
+    }
+    
     
 }
