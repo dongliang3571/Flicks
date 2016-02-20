@@ -22,14 +22,33 @@ class DetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let bar:UINavigationBar! =  self.navigationController?.navigationBar
 //        
+//        bar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+//        bar.shadowImage = UIImage()
+//        self.title = "hahaha"
+//        bar.translucent = true
+//        self.navigationController?.navigationBar.translucent = true
+//        bar.alpha = 0.1
+//        bar.backgroundColor = UIColor.blackColor()
+        self.title = ""
+        
         let contentWidth = myScrollView.frame.size.width
         let contentHeight = infoView.frame.origin.y + infoView.frame.size.height
         
         myScrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
         setupDetail()
     }
+    
 
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = false
+        let bar:UINavigationBar! =  self.navigationController?.navigationBar
+        bar.setBackgroundImage(UIImage(), forBarMetrics: UIBarMetrics.Default)
+        bar.shadowImage = UIImage()
+        bar.translucent = true
+//        bar.backgroundColor = UIColor.blackColor()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

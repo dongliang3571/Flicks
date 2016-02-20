@@ -17,7 +17,7 @@ class MoviesViewController: UIViewController {
     @IBOutlet weak var errorMessage: UIButton!
     @IBOutlet weak var searchBar: UISearchBar!
 
-    @IBOutlet weak var voteSegment: UISegmentedControl!
+//    @IBOutlet weak var voteSegment: UISegmentedControl!
     
     var movies: [NSDictionary]?
     var myrequest: NSURLRequest?
@@ -26,10 +26,12 @@ class MoviesViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.navigationController?.navigationBarHidden = true
         tableView.dataSource = self
         tableView.delegate = self
         searchBar.delegate = self
-        
+        setNavBar()
         
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
@@ -50,8 +52,11 @@ class MoviesViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
     
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.navigationBarHidden = true
+    }
     func loadDataFromNetwork() {
         
         // ... Create the NSURLRequest (myRequest) ...
@@ -81,8 +86,8 @@ class MoviesViewController: UIViewController {
                             
                             self.movies = responseDictionary["results"] as? [NSDictionary]
                             
-                            let sortedarray = self.filterbyvote(self.movies!)
-                            self.filteredData = sortedarray
+//                            let sortedarray = self.filterbyvote(self.movies!)
+                            self.filteredData = self.movies
                             self.tableView.reloadData()
                     }
                 }
@@ -141,7 +146,22 @@ class MoviesViewController: UIViewController {
         task.resume()
     }
         
-    
+    func setNavBar() {
+        
+        if let navigationBar = self.navigationController?.navigationBar {
+            
+            let shadow = NSShadow()
+            shadow.shadowColor = UIColor.grayColor().colorWithAlphaComponent(0.5)
+            shadow.shadowOffset = CGSizeMake(2, 2);
+            shadow.shadowBlurRadius = 4;
+            navigationBar.titleTextAttributes = [
+                NSFontAttributeName : UIFont.boldSystemFontOfSize(22),
+                NSForegroundColorAttributeName : UIColor(red: 0.5, green: 0.15, blue: 0.15, alpha: 0.8),
+                NSShadowAttributeName : shadow
+            ]
+            
+        }
+    }
 
     
     internal class Reachability {
@@ -191,10 +211,13 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell = tableView.dequeueReusableCellWithReuseIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
         let movie = filteredData![indexPath.row]
-//        let title = movie["title"] as? String
+        let title = movie["title"] as? String
 //        let overview = movie["overview"] as? String
+        let release_date = movie["release_date"] as? String
+//        let rating = movies["vote_average"]
         let baseUrl = "http://image.tmdb.org/t/p/w500"
-//        let votes = movie["vote_average"] as? Float
+        let votes = movie["vote_average"] as? Float
+        let popularity = movie["popularity"] as? Int
 //        print(votes!)
         let postpath = movie["poster_path"] as? String
         let imageUrl2 : String
@@ -204,7 +227,10 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
             imageUrl2 = baseUrl
         }
         let imageUrl: NSURLRequest = NSURLRequest(URL: NSURL(string: imageUrl2)!)
-//        cell.title.text = title
+        cell.cellTitle.text = title
+        cell.labelFirst.text = release_date
+        cell.label_star_rate.text = "\(votes!)"
+        cell.label_popularity.text = "\(popularity!)"
 //        cell.overview.text = overview
         cell.postview.setImageWithURLRequest(
             imageUrl,
@@ -228,8 +254,14 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
                 // do something for the failure condition
             }
         )
+
+//        cell.selectedBackgroundView
+        let backgroundView = UIView()
+        cell.backgroundColor = UIColor.whiteColor()
+        backgroundView.backgroundColor = UIColor(red: 0.0, green: 0.0, blue: 0.9, alpha: 0.1)
+        cell.selectedBackgroundView = backgroundView
+
         
-//        print("row \(indexPath.row)")
         return cell
     }
     
@@ -254,44 +286,44 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
     }
     
     
-    @IBAction func voteSegmentPressed(sender: UISegmentedControl) {
-        if(voteSegment.selectedSegmentIndex == 0) {
-            var temp_array = [NSDictionary]()
-            var sortedArray = [NSDictionary]()
-            temp_array = self.movies!
-            sortedArray = temp_array.sort { (element1, element2) -> Bool in
-                return (element1["vote_average"] as! Float) > (element2["vote_average"] as! Float)
-            }
-            
-            filteredData = sortedArray
-            tableView.reloadData()
-        }
-        else {
-            var temp_array = [NSDictionary]()
-            var sortedArray = [NSDictionary]()
-            temp_array = self.movies!
-            sortedArray = temp_array.sort { (element1, element2) -> Bool in
-                return (element1["vote_average"] as! Float) < (element2["vote_average"] as! Float)
-            }
-            
-            filteredData = sortedArray
-            tableView.reloadData()
-        }
-        
-        
-    }
+//    @IBAction func voteSegmentPressed(sender: UISegmentedControl) {
+//        if(voteSegment.selectedSegmentIndex == 0) {
+//            var temp_array = [NSDictionary]()
+//            var sortedArray = [NSDictionary]()
+//            temp_array = self.movies!
+//            sortedArray = temp_array.sort { (element1, element2) -> Bool in
+//                return (element1["vote_average"] as! Float) > (element2["vote_average"] as! Float)
+//            }
+//            
+//            filteredData = sortedArray
+//            tableView.reloadData()
+//        }
+//        else {
+//            var temp_array = [NSDictionary]()
+//            var sortedArray = [NSDictionary]()
+//            temp_array = self.movies!
+//            sortedArray = temp_array.sort { (element1, element2) -> Bool in
+//                return (element1["vote_average"] as! Float) < (element2["vote_average"] as! Float)
+//            }
+//            
+//            filteredData = sortedArray
+//            tableView.reloadData()
+//        }
+//        
+//        
+//    }
     
     
-    func filterbyvote(dictionary: [NSDictionary]) -> [NSDictionary]{
-        
-        var temp_array = [NSDictionary]()
-        temp_array = dictionary
-        let sortedArray = temp_array.sort { (element1, element2) -> Bool in
-            return (element1["vote_average"] as! Float) > (element2["vote_average"] as! Float)
-        }
-        
-        return sortedArray
-    }
+//    func filterbyvote(dictionary: [NSDictionary]) -> [NSDictionary]{
+//        
+//        var temp_array = [NSDictionary]()
+//        temp_array = dictionary
+//        let sortedArray = temp_array.sort { (element1, element2) -> Bool in
+//            return (element1["vote_average"] as! Float) > (element2["vote_average"] as! Float)
+//        }
+//        
+//        return sortedArray
+//    }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -300,7 +332,10 @@ extension MoviesViewController: UICollectionViewDataSource, UICollectionViewDele
         let movie = movies![indexpath!.row]
         
         let detailViewController = segue.destinationViewController as! DetailViewController
+        detailViewController.hidesBottomBarWhenPushed = true
         detailViewController.movie = movie
+//        detailViewController.navigationController?.navigationBar.translucent = true
+        
     }
     
     
