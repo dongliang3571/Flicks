@@ -22,6 +22,7 @@ class MoviesViewController: UIViewController {
     var movies: [NSDictionary]?
     var myrequest: NSURLRequest?
     var filteredData: [NSDictionary]?
+    var endpoint: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +56,7 @@ class MoviesViewController: UIViewController {
         
         // ... Create the NSURLRequest (myRequest) ...
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = NSURL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")
+        let url = NSURL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")
         myrequest = NSURLRequest(
             URL: url!,
             cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData,

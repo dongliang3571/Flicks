@@ -14,11 +14,19 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var overview: UILabel!
     
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var myScrollView: UIScrollView!
+    
+    
     var movie: NSDictionary?
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        
+        let contentWidth = myScrollView.frame.size.width
+        let contentHeight = infoView.frame.origin.y + infoView.frame.size.height
         
+        myScrollView.contentSize = CGSize(width: contentWidth, height: contentHeight)
         setupDetail()
     }
 
